@@ -17,12 +17,13 @@ interface CreateOrJoinScreenProps {
   dispatch: React.Dispatch<appActionTypes>;
 }
 
-const CalloutButton: React.FC<{ children: React.ReactNode; onClick: () => void }> = ({ children, onClick }) => (
+export const CalloutButton: React.FC<{ children: React.ReactNode; onClick: () => void }> = ({ children, onClick }) => (
   <Box
+    element="CALLOUT_BUTTON"
     as="button"
     onClick={onClick}
     height="size10"
-    width="size40"
+    width="100%"
     display="flex"
     alignItems="center"
     columnGap="space50"
