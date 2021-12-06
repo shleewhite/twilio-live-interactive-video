@@ -1,37 +1,20 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { makeStyles, Typography, Button, MenuItem, Link } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React, { useCallback } from 'react';
+
+import { Menu, MenuButton, MenuItem, useMenuState } from '@twilio-paste/core/menu';
+import { Button } from '@twilio-paste/core/button';
+import { Box } from '@twilio-paste/core/box';
+
+import { ChevronDownIcon } from '@twilio-paste/icons/esm/ChevronDownIcon';
+
 import { useAppState } from '../../../state';
 import UserAvatar from './UserAvatar/UserAvatar';
-import Menu from '@material-ui/core/Menu';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-const useStyles = makeStyles({
-  userContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    margin: '1em',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  userButton: {
-    color: 'white',
-  },
-  logoutLink: {
-    color: 'white',
-    cursor: 'pointer',
-    padding: '10px 20px',
-  },
-});
-
 const UserMenu: React.FC = () => {
-  const classes = useStyles();
+  const menu = useMenuState();
+
   const { user, signOut } = useAppState();
   const { localTracks } = useVideoContext();
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleSignOut = useCallback(() => {
     localTracks.forEach(track => track.stop());
@@ -40,41 +23,28 @@ const UserMenu: React.FC = () => {
 
   if (process.env.REACT_APP_SET_AUTH === 'passcode') {
     return (
-      <div className={classes.userContainer}>
-        <Link onClick={handleSignOut} className={classes.logoutLink}>
+      <Box color="colorTextIconBrandInverse">
+        <Button onClick={handleSignOut} variant="reset">
           Logout
-        </Link>
-      </div>
+        </Button>
+      </Box>
     );
   }
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
     return (
-      <div className={classes.userContainer}>
+      <Box color="colorTextIconBrandInverse">
         <UserAvatar user={user} />
-        <Button onClick={() => setMenuOpen(isOpen => !isOpen)} ref={anchorRef} className={classes.userButton}>
+        <MenuButton {...menu} variant="reset">
           {user!.displayName}
-          <ExpandMoreIcon />
-        </Button>
-        <Menu
-          open={menuOpen}
-          onClose={() => setMenuOpen(isOpen => !isOpen)}
-          anchorEl={anchorRef.current}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          <MenuItem onClick={handleSignOut}>
-            <Typography variant="body1">Logout</Typography>
+          <ChevronDownIcon decorative />
+        </MenuButton>
+        <Menu {...menu} aria-label="User Options">
+          <MenuItem {...menu} onClick={handleSignOut}>
+            Logout
           </MenuItem>
         </Menu>
-      </div>
+      </Box>
     );
   }
 

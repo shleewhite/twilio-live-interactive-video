@@ -1,62 +1,23 @@
 import React, { useCallback } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Theme,
-  Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@twilio-paste/core/button';
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalFooterActions, ModalHeading } from '@twilio-paste/core/modal';
+import { Grid, Column } from '@twilio-paste/core/grid';
+import { useUID } from '@twilio-paste/core/uid-library';
+import { Stack } from '@twilio-paste/core/stack';
+import { Paragraph } from '@twilio-paste/core/paragraph';
+import { Label } from '@twilio-paste/core/label';
+import { Input } from '@twilio-paste/core/input';
+import { Select, Option } from '@twilio-paste/core/select';
 import { inputLabels, Settings } from '../../state/settings/settingsReducer';
 import { useAppState } from '../../state';
 import useRoomState from '../../hooks/useRoomState/useRoomState';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    width: '600px',
-    minHeight: '400px',
-    [theme.breakpoints.down('xs')]: {
-      width: 'calc(100vw - 32px)',
-    },
-    '& .inputSelect': {
-      width: 'calc(100% - 35px)',
-    },
-  },
-  button: {
-    float: 'right',
-  },
-  paper: {
-    [theme.breakpoints.down('xs')]: {
-      margin: '16px',
-    },
-  },
-  formControl: {
-    display: 'block',
-    margin: '1.5em 0',
-    '&:first-child': {
-      margin: '0 0 1.5em 0',
-    },
-  },
-  label: {
-    width: '133%', // Labels have scale(0.75) applied to them, so this effectively makes the width 100%
-  },
-}));
-
 const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val);
 
 export default function ConnectionOptionsDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const classes = useStyles();
   const { settings, dispatchSetting } = useAppState();
   const roomState = useRoomState();
+  const modalId = useUID();
   const isDisabled = roomState !== 'disconnected';
 
   const handleChange = useCallback(
@@ -74,123 +35,122 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
   );
 
   return (
-    <Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
-      <DialogTitle>Connection Settings</DialogTitle>
-      <Divider />
-      <DialogContent className={classes.container}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography hidden={!isDisabled} variant="body2">
-              These settings cannot be changed when connected to a room.
-            </Typography>
-          </Grid>
+    <Modal ariaLabelledby={modalId} isOpen={open} onDismiss={onClose} size="default">
+      <ModalHeader id={modalId}>
+        <ModalHeading>Connection Settings</ModalHeading>
+      </ModalHeader>
+      <ModalBody>
+        <Grid gutter="space40">
+          <Column span={12}>
+            <Paragraph hidden={!isDisabled}>These settings cannot be changed when connected to a room.</Paragraph>
+          </Column>
 
-          <Grid item sm={6} xs={12}>
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.dominantSpeakerPriority}
-                label={inputLabels.dominantSpeakerPriority}
-                value={withDefault(settings.dominantSpeakerPriority)}
-                onChange={handleChange}
-              >
-                <MenuItem value="low">Low</MenuItem>
-                <MenuItem value="standard">Standard</MenuItem>
-                <MenuItem value="high">High</MenuItem>
-                <MenuItem value="default">Server Default</MenuItem>
-              </Select>
-            </FormControl>
+          <Column span={[12, 12, 6]}>
+            <Stack orientation="vertical" spacing="space70">
+              <>
+                <Label htmlFor={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</Label>
+                <Select
+                  disabled={isDisabled}
+                  name={inputLabels.dominantSpeakerPriority}
+                  id={inputLabels.dominantSpeakerPriority}
+                  value={withDefault(settings.dominantSpeakerPriority)}
+                  onChange={handleChange}
+                >
+                  <Option value="low">Low</Option>
+                  <Option value="standard">Standard</Option>
+                  <Option value="high">High</Option>
+                  <Option value="default">Server Default</Option>
+                </Select>
+              </>
 
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.trackSwitchOffMode}
-                label={inputLabels.trackSwitchOffMode}
-                value={withDefault(settings.trackSwitchOffMode)}
-                onChange={handleChange}
-              >
-                <MenuItem value="predicted">Predicted</MenuItem>
-                <MenuItem value="detected">Detected</MenuItem>
-                <MenuItem value="disabled">Disabled</MenuItem>
-                <MenuItem value="default">Server Default</MenuItem>
-              </Select>
-            </FormControl>
+              <>
+                <Label htmlFor={inputLabels.trackSwitchOffMode}>Track Switch Off Mode:</Label>
+                <Select
+                  disabled={isDisabled}
+                  name={inputLabels.trackSwitchOffMode}
+                  id={inputLabels.trackSwitchOffMode}
+                  value={withDefault(settings.trackSwitchOffMode)}
+                  onChange={handleChange}
+                >
+                  <Option value="predicted">Predicted</Option>
+                  <Option value="detected">Detected</Option>
+                  <Option value="disabled">Disabled</Option>
+                  <Option value="default">Server Default</Option>
+                </Select>
+              </>
 
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.bandwidthProfileMode}>Mode:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.bandwidthProfileMode}
-                label={inputLabels.bandwidthProfileMode}
-                value={withDefault(settings.bandwidthProfileMode)}
-                onChange={handleChange}
-              >
-                <MenuItem value="grid">Grid</MenuItem>
-                <MenuItem value="collaboration">Collaboration</MenuItem>
-                <MenuItem value="presentation">Presentation</MenuItem>
-                <MenuItem value="default">Server Default</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.clientTrackSwitchOffControl}
-                label={inputLabels.clientTrackSwitchOffControl}
-                value={withDefault(settings.clientTrackSwitchOffControl)}
-                onChange={handleChange}
-              >
-                <MenuItem value="auto">Auto</MenuItem>
-                <MenuItem value="manual">Manual</MenuItem>
-                <MenuItem value="default">Default</MenuItem>
-              </Select>
-            </FormControl>
+              <>
+                <Label htmlFor={inputLabels.bandwidthProfileMode}>Mode:</Label>
+                <Select
+                  disabled={isDisabled}
+                  name={inputLabels.bandwidthProfileMode}
+                  id={inputLabels.bandwidthProfileMode}
+                  value={withDefault(settings.bandwidthProfileMode)}
+                  onChange={handleChange}
+                >
+                  <Option value="grid">Grid</Option>
+                  <Option value="collaboration">Collaboration</Option>
+                  <Option value="presentation">Presentation</Option>
+                  <Option value="default">Server Default</Option>
+                </Select>
+              </>
+            </Stack>
+          </Column>
+          <Column span={[12, 12, 6]}>
+            <Stack orientation="vertical" spacing="space70">
+              <>
+                <Label htmlFor={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</Label>
+                <Select
+                  disabled={isDisabled}
+                  name={inputLabels.clientTrackSwitchOffControl}
+                  id={inputLabels.clientTrackSwitchOffControl}
+                  value={withDefault(settings.clientTrackSwitchOffControl)}
+                  onChange={handleChange}
+                >
+                  <Option value="auto">Auto</Option>
+                  <Option value="manual">Manual</Option>
+                  <Option value="default">Default</Option>
+                </Select>
+              </>
 
-            <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.contentPreferencesMode}>Content Preferences Mode:</InputLabel>
-              <Select
-                fullWidth
-                disabled={isDisabled}
-                name={inputLabels.contentPreferencesMode}
-                label={inputLabels.contentPreferencesMode}
-                value={withDefault(settings.contentPreferencesMode)}
-                onChange={handleChange}
-              >
-                <MenuItem value="auto">Auto</MenuItem>
-                <MenuItem value="manual">Manual</MenuItem>
-                <MenuItem value="default">Default</MenuItem>
-              </Select>
-            </FormControl>
+              <>
+                <Label htmlFor={inputLabels.contentPreferencesMode}>Content Preferences Mode:</Label>
+                <Select
+                  disabled={isDisabled}
+                  name={inputLabels.contentPreferencesMode}
+                  id={inputLabels.contentPreferencesMode}
+                  value={withDefault(settings.contentPreferencesMode)}
+                  onChange={handleChange}
+                >
+                  <Option value="auto">Auto</Option>
+                  <Option value="manual">Manual</Option>
+                  <Option value="default">Default</Option>
+                </Select>
+              </>
 
-            <FormControl className={classes.formControl}>
-              <TextField
-                disabled={isDisabled}
-                fullWidth
-                id={inputLabels.maxAudioBitrate}
-                label="Max Audio Bitrate"
-                placeholder="Leave blank for no limit"
-                name={inputLabels.maxAudioBitrate}
-                value={withDefault(settings.maxAudioBitrate)}
-                onChange={handleNumberChange}
-              />
-            </FormControl>
-          </Grid>
+              <>
+                <Label htmlFor={inputLabels.maxAudioBitrate}>Max Audio Bitrate:</Label>
+                <Input
+                  disabled={isDisabled}
+                  type="text"
+                  id={inputLabels.maxAudioBitrate}
+                  placeholder="Leave blank for no limit"
+                  name={inputLabels.maxAudioBitrate}
+                  value={withDefault(settings.maxAudioBitrate)}
+                  onChange={handleNumberChange}
+                />
+              </>
+            </Stack>
+          </Column>
         </Grid>
-      </DialogContent>
-      <Divider />
-      <DialogActions>
-        <Button className={classes.button} color="primary" variant="contained" onClick={onClose}>
-          Done
-        </Button>
-      </DialogActions>
-    </Dialog>
+      </ModalBody>
+      <ModalFooter>
+        <ModalFooterActions>
+          <Button variant="primary" onClick={onClose}>
+            Done
+          </Button>
+        </ModalFooterActions>
+      </ModalFooter>
+    </Modal>
   );
 }
