@@ -50,8 +50,7 @@ const IntroContainer = (props: IntroContainerProps) => {
         boxShadow="shadow"
         overflow="hidden"
         margin="space100"
-        width="auto"
-        maxWidth="size90"
+        width={['auto', null, 'size90']}
       >
         <Box
           display="flex"
