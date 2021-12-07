@@ -1,75 +1,18 @@
 import React from 'react';
-import clsx from 'clsx';
-import { Typography, makeStyles, Button, Theme, Paper } from '@material-ui/core';
+
+import { Heading } from '@twilio-paste/core/heading';
+import { Text } from '@twilio-paste/core/text';
+import { Button } from '@twilio-paste/core/button';
+import { Box } from '@twilio-paste/core/box';
+
+import { ArrowBackIcon } from '@twilio-paste/icons/esm/ArrowBackIcon';
+import { ArrowForwardIcon } from '@twilio-paste/icons/esm/ArrowForwardIcon';
+
 import { appActionTypes, ActiveScreen, appStateTypes } from '../../../state/appState/appReducer';
-import BackArrowIcon from '../../../icons/BackArrowIcon';
 import SpeakerIcon from '../../../icons/SpeakerIcon';
 import ViewerIcon from '../../../icons/ViewerIcon';
-import RightArrowIcon from '../../../icons/RightArrowIcon';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  gutterBottom: {
-    marginBottom: '0.5em',
-    fontWeight: 'bold',
-  },
-  paperContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '65%',
-    justifyContent: 'space-around',
-  },
-  paper: {
-    width: '465px',
-    height: '85px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    cursor: 'pointer',
-    transition: 'all 0.2s linear',
-    '&:hover': {
-      backgroundColor: '#EFEFEF',
-    },
-  },
-  innerPaperContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  disabledPaper: {
-    pointerEvents: 'none',
-    opacity: 0.2,
-  },
-  bodyTypography: {
-    color: '#606B85',
-    fontWeight: 'bold',
-  },
-  leftIcon: {
-    margin: '0 1em 0',
-  },
-  rightArrowIcon: {
-    margin: '0.5em 1em 0 0',
-  },
-  inputContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '1.5em 0 3.5em',
-    '& div:not(:last-child)': {
-      marginRight: '1em',
-    },
-    [theme.breakpoints.down('sm')]: {
-      margin: '1.5em 0 2em',
-    },
-  },
-  textFieldContainer: {
-    width: '100%',
-  },
-  backButton: {
-    marginTop: '1.5em',
-    fontWeight: 'bold',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
-  },
-}));
+import { CalloutButton } from '../CreateOrJoinScreen/CreateOrJoinScreen';
 
 interface SpeakerOrViewerScreenProps {
   state: appStateTypes;
@@ -77,84 +20,59 @@ interface SpeakerOrViewerScreenProps {
 }
 
 export default function SpeakerOrViewerScreen({ state, dispatch }: SpeakerOrViewerScreenProps) {
-  const classes = useStyles();
-
   return (
     <>
-      <Typography variant="h5" className={classes.gutterBottom}>
+      <Heading as="h1" variant="heading20">
         Speaker or Viewer?
-      </Typography>
-      <Typography variant="caption" className={classes.gutterBottom} style={{ color: '#606B85' }}>
+      </Heading>
+      <Text as="p" fontWeight="fontWeightBold" color="colorTextWeak" fontSize="fontSize20">
         Do you plan on chatting up the room or are you more of the quiet, mysterious audience type?
-      </Typography>
+      </Text>
 
-      <div className={classes.paperContainer}>
-        <div>
-          <Paper
-            onClick={() => dispatch({ type: 'set-participant-type', participantType: 'speaker' })}
-            className={clsx(classes.paper, { [classes.disabledPaper]: !state.participantName })}
-            elevation={3}
-            style={{ margin: '0.3em 0' }}
-          >
-            <div className={classes.innerPaperContainer}>
-              <div className={classes.leftIcon}>
-                <SpeakerIcon />
-              </div>
-              <div>
-                <Typography variant="body2" className={classes.bodyTypography}>
-                  Join as speaker
-                </Typography>
-                <Typography variant="caption" style={{ color: '#606B85' }}>
-                  Your audio/video will be shared by default.
-                </Typography>
-              </div>
-            </div>
-            <div className={classes.rightArrowIcon}>
-              <RightArrowIcon />
-            </div>
-          </Paper>
-        </div>
+      <Box display="flex" flexDirection="column" height="65%" justifyContent="space-around">
+        <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'speaker' })}>
+          <SpeakerIcon />
+          <Box display="flex" flexGrow={1} flexDirection="column">
+            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign="left">
+              Join as speaker
+            </Text>
+            <Text as="span" color="colorTextWeak" textAlign="left" fontSize="fontSize20">
+              Your audio/video will be shared by default.
+            </Text>
+          </Box>
+          <Box>
+            <ArrowForwardIcon decorative={true} size="sizeIcon80" color="colorTextIcon" />
+          </Box>
+        </CalloutButton>
+        <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'viewer' })}>
+          <ViewerIcon />
+          <Box display="flex" flexGrow={1} flexDirection="column">
+            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign="left">
+              Join as viewer
+            </Text>
+            <Text as="span" color="colorTextWeak" textAlign="left" fontSize="fontSize20">
+              You’ll have to raise your hand to speak or share video.
+            </Text>
+            <Text as="span" color="colorTextWeak" textAlign="left" fontSize="fontSize20">
+              Your audio/video will not be shared by default.
+            </Text>
+          </Box>
+          <Box>
+            <ArrowForwardIcon decorative={true} size="sizeIcon80" color="colorTextIcon" />
+          </Box>
+        </CalloutButton>
+      </Box>
 
-        <div>
-          <Paper
-            onClick={() => dispatch({ type: 'set-participant-type', participantType: 'viewer' })}
-            elevation={3}
-            color="primary"
-            className={clsx(classes.paper, { [classes.disabledPaper]: !state.participantName })}
-          >
-            <div className={classes.innerPaperContainer}>
-              <div className={classes.leftIcon}>
-                <ViewerIcon />
-              </div>
-              <div>
-                <Typography variant="body2" className={classes.bodyTypography}>
-                  Join as viewer
-                </Typography>
-                <Typography variant="caption" style={{ color: '#606B85' }}>
-                  You’ll have to raise your hand to speak or share video.
-                  <div>Your audio/video will not be shared by default.</div>
-                </Typography>
-              </div>
-            </div>
-            <div className={classes.rightArrowIcon}>
-              <RightArrowIcon />
-            </div>
-          </Paper>
-        </div>
-      </div>
-
-      <div>
+      <Box>
         <Button
-          startIcon={<BackArrowIcon />}
-          onClick={() => dispatch({ type: 'set-active-screen', activeScreen: ActiveScreen.CreateOrJoinScreen })}
-          variant="outlined"
-          disabled={!state.participantName}
-          className={classes.backButton}
+          variant="secondary"
+          onClick={() => dispatch({ type: 'set-active-screen', activeScreen: ActiveScreen.ParticipantNameScreen })}
           size="small"
         >
+          <ArrowBackIcon decorative={true} />
           Go back
         </Button>
-      </div>
+      </Box>
     </>
   );
 }
