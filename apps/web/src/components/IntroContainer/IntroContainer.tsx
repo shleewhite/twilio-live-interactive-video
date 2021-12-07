@@ -59,6 +59,7 @@ const IntroContainer = (props: IntroContainerProps) => {
           justifyContent="center"
           alignItems="center"
           height={['size10', 'auto']}
+          minHeight={['unset', 'size40']}
           width={['100%', 'size30']}
           rowGap="space40"
           columnGap="space40"
