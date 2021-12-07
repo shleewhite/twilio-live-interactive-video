@@ -24,6 +24,7 @@ const IntroContainer = (props: IntroContainerProps) => {
   return (
     <Box
       display="flex"
+      flexDirection="column"
       alignItems="center"
       justifyContent="center"
       backgroundColor="colorBackgroundBodyInverse"
@@ -34,20 +35,14 @@ const IntroContainer = (props: IntroContainerProps) => {
       bottom={transparentBackground ? 'space190' : undefined}
       zIndex={transparentBackground ? 'zIndex90' : undefined}
     >
-      <Box
-        display={props.transparentBackground ? 'none' : ['none', 'block']}
-        position="absolute"
-        top={0}
-        left={0}
-        margin="space60"
-        color="colorTextIconBrandHighlight"
-      >
-        <LogoTwilioIcon decorative={false} title="Twilio" size="sizeIcon60" />
+      <Box padding="space60" display="flex" justifyContent="space-between" width="100%" position="absolute" top={0}>
+        <Box display={props.transparentBackground ? 'none' : 'block'} color="colorTextIconBrandHighlight">
+          <LogoTwilioIcon decorative={false} title="Twilio" size="sizeIcon60" />
+        </Box>
+
+        {user && location.pathname !== '/login' && <UserMenu />}
       </Box>
 
-      {/* <UserMenu /> */}
-
-      {user && location.pathname !== '/login' && <UserMenu />}
       <Box
         display="flex"
         flexDirection={['column', 'row']}
@@ -55,7 +50,8 @@ const IntroContainer = (props: IntroContainerProps) => {
         boxShadow="shadow"
         overflow="hidden"
         margin="space100"
-        width={['auto', 'size90']}
+        width="auto"
+        maxWidth="size90"
       >
         <Box
           display="flex"

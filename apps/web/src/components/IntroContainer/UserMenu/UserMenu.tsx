@@ -23,7 +23,7 @@ const UserMenu: React.FC = () => {
 
   if (process.env.REACT_APP_SET_AUTH === 'passcode') {
     return (
-      <Box position="absolute" top={0} right={0} margin="space50" color="colorTextIconBrandInverse">
+      <Box color="colorTextIconBrandInverse">
         <Button onClick={handleSignOut} variant="reset">
           Logout
         </Button>
@@ -33,7 +33,7 @@ const UserMenu: React.FC = () => {
 
   if (process.env.REACT_APP_SET_AUTH === 'firebase') {
     return (
-      <Box position="absolute" top={0} right={0} margin="space50" color="colorTextIconBrandInverse">
+      <Box color="colorTextIconBrandInverse">
         <UserAvatar user={user} />
         <MenuButton {...menu} variant="reset">
           {user!.displayName}
