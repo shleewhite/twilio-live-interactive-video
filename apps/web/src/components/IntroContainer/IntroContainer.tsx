@@ -45,6 +45,8 @@ const IntroContainer = (props: IntroContainerProps) => {
         <LogoTwilioIcon decorative={false} title="Twilio" size="sizeIcon60" />
       </Box>
 
+      {/* <UserMenu /> */}
+
       {user && location.pathname !== '/login' && <UserMenu />}
       <Box
         display="flex"
