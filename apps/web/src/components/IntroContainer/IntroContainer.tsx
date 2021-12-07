@@ -22,20 +22,25 @@ const IntroContainer = (props: IntroContainerProps) => {
   const { transparentBackground } = props;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      backgroundColor="colorBackgroundBodyInverse"
-      position={transparentBackground ? 'fixed' : undefined}
-      top={transparentBackground ? 0 : undefined}
-      left={transparentBackground ? 0 : undefined}
-      right={transparentBackground ? 0 : undefined}
-      bottom={transparentBackground ? 'space190' : undefined}
-      zIndex={transparentBackground ? 'zIndex90' : undefined}
-    >
-      <Box padding="space60" display="flex" justifyContent="space-between" width="100%" position="absolute" top={0}>
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+      <Box
+        backgroundColor="colorBackgroundBodyInverse"
+        opacity={transparentBackground ? '80%' : undefined}
+        width="100%"
+        height={transparentBackground ? 'auto' : '100%'}
+        position="fixed"
+        top={0}
+        bottom={transparentBackground ? 'space190' : undefined}
+      />
+      <Box
+        padding="space60"
+        display="flex"
+        justifyContent="space-between"
+        width="100%"
+        position="absolute"
+        top={0}
+        zIndex="zIndex90"
+      >
         <Box display={props.transparentBackground ? 'none' : 'block'} color="colorTextIconBrandHighlight">
           <LogoTwilioIcon decorative={false} title="Twilio" size="sizeIcon60" />
         </Box>
@@ -51,6 +56,7 @@ const IntroContainer = (props: IntroContainerProps) => {
         overflow="hidden"
         margin="space100"
         width={['auto', null, 'size90']}
+        zIndex="zIndex90"
       >
         <Box
           display="flex"
