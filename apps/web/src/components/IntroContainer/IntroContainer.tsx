@@ -1,38 +1,19 @@
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, Theme, Typography } from '@material-ui/core';
+
+import { Box } from '@twilio-paste/core/box';
+import { Text } from '@twilio-paste/core/text';
+
+import { ProductLiveIcon } from '@twilio-paste/icons/esm/ProductLiveIcon';
+import { LogoTwilioIcon } from '@twilio-paste/icons/esm/LogoTwilioIcon';
+
+import { makeStyles, Theme } from '@material-ui/core';
 import Swoosh from './swoosh';
 import VideoLogo from './VideoLogo';
-import TwilioLogo from './TwilioLogo';
 import { useAppState } from '../../state';
 import UserMenu from './UserMenu/UserMenu';
 import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  background: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'rgb(40, 42, 43)',
-    height: '100%',
-  },
-  transparentBackground: {
-    background: 'rgba(0, 0, 0, 0.8)',
-    position: 'fixed',
-    height: 'auto',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: `${theme.footerHeight}px`,
-    zIndex: 100,
-    '& $twilioLogo': {
-      display: 'none',
-    },
-  },
-  container: {
-    position: 'relative',
-    flex: '1',
-  },
   innerContainer: {
     display: 'flex',
     width: '888px',
@@ -78,33 +59,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
     },
   },
-  twilioLogo: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    margin: '20px',
-  },
-  content: {
-    background: 'white',
-    width: '100%',
-    padding: '2em 4em',
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: '100%',
-    [theme.breakpoints.down('sm')]: {
-      padding: '2em',
-    },
-  },
-  title: {
-    color: 'white',
-    fontWeight: 'bold',
-    [theme.breakpoints.down('sm')]: {
-      margin: 0,
-      fontSize: '1.1rem',
-    },
-  },
 }));
 
 interface IntroContainerProps {
@@ -116,25 +70,128 @@ const IntroContainer = (props: IntroContainerProps) => {
   const classes = useStyles();
   const { user } = useAppState();
   const location = useLocation();
+  const { transparentBackground } = props;
 
   return (
-    <div className={clsx(classes.background, { [classes.transparentBackground]: props.transparentBackground })}>
-      <TwilioLogo className={classes.twilioLogo} />
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      backgroundColor="colorBackgroundBodyInverse"
+      height={transparentBackground ? 'auto' : '100%'}
+      position={transparentBackground ? 'fixed' : undefined}
+      top={transparentBackground ? 0 : undefined}
+      left={transparentBackground ? 0 : undefined}
+      right={transparentBackground ? 0 : undefined}
+      bottom={transparentBackground ? 'space190' : undefined}
+      zIndex={transparentBackground ? 'zIndex90' : undefined}
+    >
+      <Box
+        display={props.transparentBackground ? 'none' : 'block'}
+        position="absolute"
+        top={0}
+        left={0}
+        margin="space60"
+        color="colorTextIconBrandHighlight"
+      >
+        <LogoTwilioIcon decorative={false} title="Twilio" size="sizeIcon60" />
+      </Box>
+
       {user && location.pathname !== '/login' && <UserMenu />}
-      <div className={classes.container}>
+      <Box flex={1}>
+        {/* <Box
+          display={['block', 'flex']}
+          flexDirection={['row', 'column']}
+          borderRadius="borderRadius30"
+          overflow="hidden"
+          position="relative"
+          margin="auto"
+          height={['auto', 'size40']}
+          width={['calc(100% - 40px)', 'size80']}
+          maxWidth={['size40', 'unset']}
+          boxShadow="shadow"
+        > */}
         <div className={classes.innerContainer}>
+          {/*   swooshContainer: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundImage: Swoosh,
+    backgroundSize: 'cover',
+    width: '296px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100px',
+      backgroundPositionY: '140px',
+    },
+  }, */}
+          {/* <Box
+            position="relative"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            backgroundImage={Swoosh}
+            backgroundSize="cover"
+            width={['100%', 'size30']}
+            height={['100%', 'auto']}
+            // backgroundPositionY=''
+          > */}
           <div className={classes.swooshContainer}>
-            <div className={classes.logoContainer}>
+            <Box
+              position="absolute"
+              display="flex"
+              alignItems="center"
+              width={['90%', 'size20']}
+              flexDirection={['row', 'column']}
+            >
+              {/* <div className={classes.logoContainer}> */}
               <VideoLogo />
-              <Typography variant="h6" className={classes.title}>
+              {/* <Box
+                color="colorTextIconBrandInverse"
+                backgroundColor="colorBackgroundBrandHighlight"
+                borderRadius="borderRadius30"
+                width="size10"
+                height="size10"
+                // padding="space20"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <ProductLiveIcon decorative={true} size="sizeIcon100" />
+              </Box> */}
+              <Text
+                textAlign="center"
+                as="p"
+                color="colorTextInverse"
+                fontWeight="fontWeightBold"
+                fontSize={['fontSize50', 'fontSize60']}
+              >
                 Twilio Live Video
-              </Typography>
-            </div>
+              </Text>
+              {/* </div> */}
+            </Box>
           </div>
-          <div className={classes.content}>{props.children}</div>
+          {/* </Box> */}
+          <Box
+            backgroundColor="colorBackgroundBody"
+            width="100%"
+            paddingTop="space90"
+            paddingBottom="space90"
+            paddingLeft={['space90', 'space170']}
+            paddingRight={['space90', 'space170']}
+            flex={1}
+            display="flex"
+            flexDirection="column"
+            height="100%"
+            justifyContent="center"
+          >
+            {props.children}
+          </Box>
         </div>
-      </div>
-    </div>
+        {/* </Box> */}
+      </Box>
+    </Box>
   );
 };
 
