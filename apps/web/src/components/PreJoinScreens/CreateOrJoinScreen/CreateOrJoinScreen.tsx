@@ -54,7 +54,14 @@ export default function CreateOrJoinScreen({ state, dispatch }: CreateOrJoinScre
       <Text as="p" fontWeight="fontWeightBold" color="colorTextWeak">
         Create your own event or join one that's already happening.
       </Text>
-      <Box display="flex" flexDirection="column" justifyContent="space-evenly" height="70%">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-evenly"
+        marginTop="space60"
+        marginBottom="space60"
+        rowGap="space40"
+      >
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'host' })}>
           <CreateEventIcon />
           <Box display="flex" flexGrow={1}>
