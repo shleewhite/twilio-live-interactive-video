@@ -29,14 +29,21 @@ export default function SpeakerOrViewerScreen({ state, dispatch }: SpeakerOrView
         Do you plan on chatting up the room or are you more of the quiet, mysterious audience type?
       </Text>
 
-      <Box display="flex" flexDirection="column" height="65%" justifyContent="space-around">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-around"
+        marginTop="space60"
+        marginBottom="space60"
+        rowGap="space40"
+      >
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'speaker' })}>
           <SpeakerIcon />
           <Box display="flex" flexGrow={1} flexDirection="column">
-            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign="left">
+            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign={['center', 'left']}>
               Join as speaker
             </Text>
-            <Text as="span" color="colorTextWeak" textAlign="left" fontSize="fontSize20">
+            <Text as="span" color="colorTextWeak" textAlign={['center', 'left']} fontSize="fontSize20">
               Your audio/video will be shared by default.
             </Text>
           </Box>
@@ -47,13 +54,13 @@ export default function SpeakerOrViewerScreen({ state, dispatch }: SpeakerOrView
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'viewer' })}>
           <ViewerIcon />
           <Box display="flex" flexGrow={1} flexDirection="column">
-            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign="left">
+            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign={['center', 'left']}>
               Join as viewer
             </Text>
-            <Text as="span" color="colorTextWeak" textAlign="left" fontSize="fontSize20">
+            <Text as="span" color="colorTextWeak" textAlign={['center', 'left']} fontSize="fontSize20">
               You’ll have to raise your hand to speak or share video.
             </Text>
-            <Text as="span" color="colorTextWeak" textAlign="left" fontSize="fontSize20">
+            <Text as="span" color="colorTextWeak" textAlign={['center', 'left']} fontSize="fontSize20">
               Your audio/video will not be shared by default.
             </Text>
           </Box>
