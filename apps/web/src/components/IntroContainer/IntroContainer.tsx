@@ -54,7 +54,7 @@ const IntroContainer = (props: IntroContainerProps) => {
         borderRadius="borderRadius30"
         boxShadow="shadow"
         overflow="hidden"
-        margin="space100"
+        margin={['space0', 'space100']}
         maxWidth="size90"
         zIndex="zIndex90"
       >
