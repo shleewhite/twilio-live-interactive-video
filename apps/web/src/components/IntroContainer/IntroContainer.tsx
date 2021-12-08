@@ -3,10 +3,10 @@ import React from 'react';
 import { Box } from '@twilio-paste/core/box';
 import { Text } from '@twilio-paste/core/text';
 
-import { ProductLiveIcon } from '@twilio-paste/icons/esm/ProductLiveIcon';
 import { LogoTwilioIcon } from '@twilio-paste/icons/esm/LogoTwilioIcon';
 
 import Swoosh from './swoosh';
+import VideoLogo from './VideoLogo';
 import { useAppState } from '../../state';
 import UserMenu from './UserMenu/UserMenu';
 import { useLocation } from 'react-router-dom';
@@ -71,7 +71,7 @@ const IntroContainer = (props: IntroContainerProps) => {
           columnGap="space40"
         >
           <Box color="colorTextIconBrandInverse">
-            <ProductLiveIcon decorative={true} size="sizeIcon100" />
+            <VideoLogo aria-hidden="true" />
           </Box>
           <Text
             textAlign="center"
