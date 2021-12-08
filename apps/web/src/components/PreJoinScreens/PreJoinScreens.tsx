@@ -85,7 +85,7 @@ export default function PreJoinScreens() {
       } else if (e.response?.data?.error?.message === 'error finding room') {
         toaster.push({
           variant: 'warning',
-          message: 'An event already exists with that name. Try creating an event with a different name.',
+          message: 'Event cannot be found. Please check the event name and try again.',
         });
       } else {
         toaster.push({
