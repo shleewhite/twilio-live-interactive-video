@@ -50,27 +50,26 @@ const IntroContainer = (props: IntroContainerProps) => {
 
       <Box
         display="flex"
-        flexDirection={['column', 'row']}
+        flexDirection={['column', 'column', 'row']}
         borderRadius="borderRadius30"
         boxShadow="shadow"
         overflow="hidden"
         margin="space100"
-        width={['auto', null, 'size90']}
+        maxWidth="size90"
         zIndex="zIndex90"
       >
         <Box
           display="flex"
-          flexDirection={['row', 'column']}
+          flexDirection={['row', 'row', 'column']}
           backgroundImage={Swoosh}
           justifyContent="center"
           alignItems="center"
-          height={['size10', 'auto']}
-          minHeight={['unset', 'size40']}
-          width={['100%', 'size30']}
+          minHeight={['size10', 'size10', 'size40']}
+          minWidth={['100%', '100%', '30%']}
           rowGap="space40"
           columnGap="space40"
         >
-          <Box color="colorTextIconBrandInverse">
+          <Box color="colorTextIconBrandInverse" maxWidth={['sizeIcon110', 'sizeIcon110', '50%']}>
             <VideoLogo aria-hidden="true" />
           </Box>
           <Text
@@ -78,7 +77,7 @@ const IntroContainer = (props: IntroContainerProps) => {
             as="p"
             color="colorTextInverse"
             fontWeight="fontWeightBold"
-            fontSize={['fontSize50', 'fontSize60']}
+            fontSize={['fontSize50', 'fontSize50', 'fontSize60']}
           >
             Twilio Live Video
           </Text>
@@ -88,8 +87,8 @@ const IntroContainer = (props: IntroContainerProps) => {
           width="100%"
           paddingTop="space90"
           paddingBottom="space90"
-          paddingLeft={['space90', 'space170']}
-          paddingRight={['space90', 'space170']}
+          paddingLeft={['space90', 'space90', 'space170']}
+          paddingRight={['space90', 'space90', 'space170']}
           display="flex"
           flexDirection="column"
           height="100%"
