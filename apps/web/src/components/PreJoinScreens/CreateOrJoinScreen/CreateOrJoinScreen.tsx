@@ -22,11 +22,13 @@ export const CalloutButton: React.FC<{ children: React.ReactNode; onClick: () =>
     element="CALLOUT_BUTTON"
     as="button"
     onClick={onClick}
-    height="size10"
+    height={['auto', 'size10']}
     width="100%"
     display="flex"
+    flexDirection={['column', 'row']}
     alignItems="center"
     columnGap="space50"
+    rowGap="space50"
     backgroundColor="colorBackgroundBody"
     border="none"
     boxShadow="shadow"
@@ -34,6 +36,8 @@ export const CalloutButton: React.FC<{ children: React.ReactNode; onClick: () =>
     cursor="pointer"
     paddingLeft="space50"
     paddingRight="space50"
+    paddingTop={['space10', 'space0']}
+    paddingBottom={['space10', 'space0']}
     transition="background-color 0.2s linear"
     _focus={{
       boxShadow: 'shadowFocus',
@@ -55,11 +59,18 @@ export default function CreateOrJoinScreen({ state, dispatch }: CreateOrJoinScre
       <Text as="p" fontWeight="fontWeightBold" color="colorTextWeak">
         Create your own event or join one that's already happening.
       </Text>
-      <Box display="flex" flexDirection="column" justifyContent="space-evenly" height="70%">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-evenly"
+        marginTop="space60"
+        marginBottom="space60"
+        rowGap="space40"
+      >
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'host' })}>
           <CreateEventIcon />
           <Box display="flex" flexGrow={1}>
-            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign="left">
+            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign={['center', 'left']}>
               Create a new event
             </Text>
           </Box>
@@ -71,7 +82,7 @@ export default function CreateOrJoinScreen({ state, dispatch }: CreateOrJoinScre
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: null })}>
           <JoinEventIcon />
           <Box display="flex" flexGrow={1}>
-            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign="left">
+            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign={['center', 'left']}>
               Join an event
             </Text>
           </Box>
