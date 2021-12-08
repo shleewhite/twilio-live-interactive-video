@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { Theme } from '@twilio-paste/core/theme';
+import { CustomizationProvider } from '@twilio-paste/core/customization';
 
 import App from './App';
 import AppStateProvider, { useAppState } from './state';
@@ -50,7 +50,7 @@ const VideoApp = () => {
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
-    <Theme.Provider theme="default">
+    <CustomizationProvider baseTheme="default" customBreakpoints={['600px', '960px', '1280px', '1920px']}>
       <UnsupportedBrowserWarning>
         <Router basename="/">
           <AppStateProvider>
@@ -71,7 +71,7 @@ ReactDOM.render(
           </AppStateProvider>
         </Router>
       </UnsupportedBrowserWarning>
-    </Theme.Provider>
+    </CustomizationProvider>
   </MuiThemeProvider>,
   document.getElementById('root')
 );

@@ -1,25 +1,33 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import MicIcon from '../../../icons/MicIcon';
-import MicOffIcon from '../../../icons/MicOffIcon';
+import { Button, ButtonProps } from '@twilio-paste/core/button';
+import { MicrophoneOnIcon } from '@twilio-paste/icons/esm/MicrophoneOnIcon';
+import { MicrophoneOffIcon } from '@twilio-paste/icons/esm/MicrophoneOffIcon';
 
 import useLocalAudioToggle from '../../../hooks/useLocalAudioToggle/useLocalAudioToggle';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 
-export default function ToggleAudioButton(props: { disabled?: boolean; className?: string }) {
+export default function ToggleAudioButton({
+  disabled,
+  variant = 'secondary',
+}: {
+  disabled?: boolean;
+  variant?: ButtonProps['variant'];
+}) {
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
   const { localTracks } = useVideoContext();
   const hasAudioTrack = localTracks.some(track => track.kind === 'audio');
 
   return (
     <Button
-      className={props.className}
+      variant={variant}
+      element="TOGGLE_AUDIO_BUTTON"
+      fullWidth
       onClick={toggleAudioEnabled}
-      disabled={!hasAudioTrack || props.disabled}
-      startIcon={isAudioEnabled ? <MicIcon /> : <MicOffIcon />}
+      disabled={!hasAudioTrack || disabled}
       data-cy-audio-toggle
     >
+      {isAudioEnabled ? <MicrophoneOnIcon decorative /> : <MicrophoneOffIcon decorative />}
       {!hasAudioTrack ? 'No Audio' : isAudioEnabled ? 'Mute' : 'Unmute'}
     </Button>
   );
