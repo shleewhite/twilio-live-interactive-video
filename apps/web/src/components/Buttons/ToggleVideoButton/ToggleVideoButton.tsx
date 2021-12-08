@@ -27,7 +27,7 @@ export default function ToggleVideoButton({
 
   return (
     <Button
-      element="TOGGLE_AUDIO_BUTTON"
+      element="TOGGLE_VIDEO_BUTTON"
       variant={variant}
       fullWidth
       onClick={toggleVideo}
