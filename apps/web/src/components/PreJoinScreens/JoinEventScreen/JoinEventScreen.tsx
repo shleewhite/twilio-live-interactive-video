@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 
 import { Heading } from '@twilio-paste/core/heading';
-import { Text } from '@twilio-paste/core/text';
+import { Paragraph } from '@twilio-paste/core/paragraph';
 import { Input } from '@twilio-paste/core/input';
 import { Label } from '@twilio-paste/core/label';
 import { Button } from '@twilio-paste/core/button';
@@ -34,11 +34,9 @@ export default function JoinEventScreen({ state, dispatch, connect }: JoinEventS
       <Heading as="h1" variant="heading20">
         Join event
       </Heading>
-      <Text as="p" fontWeight="fontWeightBold" color="colorTextWeak">
-        Enter the event name to join.
-      </Text>
+      <Paragraph>Enter the event name to join.</Paragraph>
       <Box as="form" onSubmit={handleSubmit}>
-        <Box width="100%" marginTop="space70" marginBottom="space150">
+        <Box width="100%" marginBottom="space150">
           <Label htmlFor="input-event-name">Event Name</Label>
           <Input type="text" id="input-event-name" value={state.eventName} onChange={handleNameChange} />
         </Box>
