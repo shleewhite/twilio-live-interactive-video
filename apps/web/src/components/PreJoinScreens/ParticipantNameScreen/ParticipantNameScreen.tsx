@@ -7,6 +7,7 @@ import { Input } from '@twilio-paste/core/input';
 import { Label } from '@twilio-paste/core/label';
 import { Button } from '@twilio-paste/core/button';
 import { Box } from '@twilio-paste/core/box';
+import { Grid, Column } from '@twilio-paste/core/grid';
 interface ParticipantNameScreenProps {
   state: appStateTypes;
   dispatch: React.Dispatch<appActionTypes>;
@@ -35,7 +36,11 @@ export default function ParticipantNameScreen({ state, dispatch }: ParticipantNa
           <Label htmlFor="input-user-name">Full Name</Label>
           <Input type="text" id="input-user-name" value={state.participantName} onChange={handleNameChange} />
         </Box>
-        <Box display="flex" justifyContent="flex-end">
+        <Box
+          display="flex"
+          flexDirection={['column', 'column', 'row']}
+          justifyContent={['stretch', 'stretch', 'flex-end']}
+        >
           <Button variant="primary" type="submit" disabled={!state.participantName}>
             Continue
           </Button>

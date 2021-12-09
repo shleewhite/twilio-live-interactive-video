@@ -42,7 +42,11 @@ export default function JoinEventScreen({ state, dispatch, connect }: JoinEventS
           <Label htmlFor="input-event-name">Event Name</Label>
           <Input type="text" id="input-event-name" value={state.eventName} onChange={handleNameChange} />
         </Box>
-        <Box display="flex" justifyContent="flex-end">
+        <Box
+          display="flex"
+          flexDirection={['column', 'column', 'row']}
+          justifyContent={['stretch', 'stretch', 'flex-end']}
+        >
           <Button variant="primary" type="submit" disabled={!state.eventName}>
             Continue
           </Button>

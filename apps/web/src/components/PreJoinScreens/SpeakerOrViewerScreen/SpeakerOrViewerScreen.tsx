@@ -70,7 +70,11 @@ export default function SpeakerOrViewerScreen({ state, dispatch }: SpeakerOrView
         </CalloutButton>
       </Box>
 
-      <Box>
+      <Box
+        display="flex"
+        flexDirection={['column', 'column', 'row']}
+        justifyContent={['stretch', 'stretch', 'flex-start']}
+      >
         <Button
           variant="secondary"
           onClick={() => dispatch({ type: 'set-active-screen', activeScreen: ActiveScreen.ParticipantNameScreen })}
