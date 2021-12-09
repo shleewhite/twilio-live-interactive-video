@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Heading } from '@twilio-paste/core/heading';
-import { Text } from '@twilio-paste/core/text';
+import { Paragraph } from '@twilio-paste/core/paragraph';
 import { Button } from '@twilio-paste/core/button';
 import { Box } from '@twilio-paste/core/box';
 
@@ -56,23 +56,14 @@ export default function CreateOrJoinScreen({ state, dispatch }: CreateOrJoinScre
       <Heading as="h1" variant="heading20">
         Create or join?
       </Heading>
-      <Text as="p" fontWeight="fontWeightBold" color="colorTextWeak">
-        Create your own event or join one that's already happening.
-      </Text>
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-evenly"
-        marginTop="space60"
-        marginBottom="space60"
-        rowGap="space40"
-      >
+      <Paragraph>Create your own event or join one that's already happening.</Paragraph>
+      <Box display="flex" flexDirection="column" justifyContent="space-evenly" marginBottom="space80" rowGap="space60">
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: 'host' })}>
           <CreateEventIcon />
           <Box display="flex" flexGrow={1}>
-            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign={['center', 'left']}>
+            <Heading as="h3" variant="heading50" marginBottom="space0">
               Create a new event
-            </Text>
+            </Heading>
           </Box>
           <Box>
             <ArrowForwardIcon decorative={true} size="sizeIcon80" color="colorTextIcon" />
@@ -82,9 +73,9 @@ export default function CreateOrJoinScreen({ state, dispatch }: CreateOrJoinScre
         <CalloutButton onClick={() => dispatch({ type: 'set-participant-type', participantType: null })}>
           <JoinEventIcon />
           <Box display="flex" flexGrow={1}>
-            <Text as="span" fontWeight="fontWeightBold" color="colorTextWeak" textAlign={['center', 'left']}>
+            <Heading as="h3" variant="heading50" marginBottom="space0">
               Join an event
-            </Text>
+            </Heading>
           </Box>
           <Box>
             <ArrowForwardIcon decorative={true} size="sizeIcon80" color="colorTextIcon" />

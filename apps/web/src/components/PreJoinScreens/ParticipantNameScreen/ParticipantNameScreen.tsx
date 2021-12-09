@@ -25,7 +25,14 @@ export default function ParticipantNameScreen({ state, dispatch }: ParticipantNa
 
   return (
     <>
-      <Text as="p" fontWeight="fontWeightBold" color="colorTextWeak" marginBottom="space20" fontSize="fontSize70">
+      <Text
+        as="p"
+        fontWeight="fontWeightBold"
+        color="colorTextWeak"
+        marginBottom="space20"
+        fontSize="fontSize70"
+        lineHeight="lineHeight70"
+      >
         Welcome to
       </Text>
       <Heading as="h1" variant="heading10">
