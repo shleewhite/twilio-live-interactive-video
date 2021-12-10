@@ -35,6 +35,7 @@ function addLinks(text: string) {
 export default function TextMessage({ body, isLocalParticipant }: TextMessageProps) {
   return (
     <Box
+      element="TEXT_MESSAGE"
       backgroundColor={isLocalParticipant ? 'colorBackgroundPrimaryWeakest' : 'colorBackground'}
       whiteSpace="pre-wrap"
       wordBreak="break-word"

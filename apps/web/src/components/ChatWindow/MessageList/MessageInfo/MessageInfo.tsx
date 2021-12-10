@@ -11,7 +11,7 @@ interface MessageInfoProps {
 
 export default function MessageInfo({ author, dateCreated, isLocalParticipant }: MessageInfoProps) {
   return (
-    <Box display="flex" justifyContent="space-between" alignItems="center" marginTop="space60">
+    <Box element="MESSAGE_INFO" display="flex" justifyContent="space-between" alignItems="center" marginTop="space60">
       <Text as="span" fontSize="fontSize20" lineHeight="lineHeight20" color="colorTextWeak">
         {isLocalParticipant ? `${author} (You)` : author}
       </Text>

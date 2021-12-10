@@ -34,6 +34,7 @@ export default function FileMessage({ media }: MediaMessageProps) {
 
   return (
     <Box
+      element="MEDIA_MESSAGE"
       as="button"
       onClick={handleClick}
       display="flex"
