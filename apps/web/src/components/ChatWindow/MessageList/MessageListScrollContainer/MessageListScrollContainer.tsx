@@ -1,7 +1,11 @@
 /* istanbul ignore file */
 import React from 'react';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import Button from '@material-ui/core/Button';
+
+import { Button } from '@twilio-paste/core/button';
+import { Box } from '@twilio-paste/core/box';
+
+import { ArrowDownIcon } from '@twilio-paste/icons/esm/ArrowDownIcon';
+
 import clsx from 'clsx';
 import { Message } from '@twilio/conversations/lib/message';
 import throttle from 'lodash.throttle';
@@ -22,6 +26,7 @@ const styles = createStyles({
     overflowY: 'auto',
     flex: '1',
     paddingBottom: '1em',
+    // position: 'relative',
   },
   button: {
     position: 'absolute',
@@ -139,23 +144,48 @@ export class MessageListScrollContainer extends React.Component<
     const { classes } = this.props;
 
     return (
+      //   outerContainer: {
+      //   minHeight: 0,
+      //   flex: 1,
+      //   position: 'relative',
+      // },
       <div className={classes.outerContainer}>
-        <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll>
-          <div className={classes.messageListContainer}>
-            {this.props.children}
-            <Button
-              className={clsx(classes.button, { [classes.showButton]: this.state.showButton })}
-              onClick={this.handleClick}
-              startIcon={<ArrowDownwardIcon />}
-              color="primary"
-              variant="contained"
-              data-cy-new-message-button
-            >
+        {/* height: '100%',
+    overflowY: 'auto',
+    padding: '0 1.2em 0', */}
+        {/* <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll> */}
+        {/* overflowY: 'auto',
+    flex: '1',
+    paddingBottom: '1em', */}
+        <Box
+          height="100%"
+          overflowY="auto"
+          marginBottom="space50"
+          marginX="space60"
+          data-cy-message-list-inner-scroll
+          ref={this.chatThreadRef}
+        >
+          {/* <div className={classes.messageListContainer}> */}
+          {this.props.children}
+
+          <Box
+            visibility={this.state.showButton ? 'visible' : 'hidden'}
+            opacity={this.state.showButton ? 1 : 0}
+            transition="all 0.5s ease"
+            position="absolute"
+            boxShadow="shadow"
+            bottom="space50"
+            right="space90"
+          >
+            <Button onClick={this.handleClick} variant="primary" data-cy-new-message-button>
+              <ArrowDownIcon decorative />
               {this.state.messageNotificationCount} new message
               {this.state.messageNotificationCount > 1 && 's'}
             </Button>
-          </div>
-        </div>
+          </Box>
+          {/* </div> */}
+        </Box>
+        {/* </div> */}
       </div>
     );
   }

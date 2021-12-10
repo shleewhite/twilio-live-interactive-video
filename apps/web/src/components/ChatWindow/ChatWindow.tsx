@@ -38,7 +38,7 @@ export default function ChatWindow() {
   const { isChatWindowOpen, messages, conversation } = useChatContext();
 
   return (
-    <aside className={clsx(classes.chatWindowContainer, { [classes.hide]: !isChatWindowOpen })}>
+    <aside className={clsx(classes.chatWindowContainer, { [classes.hide]: false })}>
       <ChatWindowHeader />
       <MessageList messages={messages} />
       <ChatInput conversation={conversation!} isChatWindowOpen={isChatWindowOpen} />
