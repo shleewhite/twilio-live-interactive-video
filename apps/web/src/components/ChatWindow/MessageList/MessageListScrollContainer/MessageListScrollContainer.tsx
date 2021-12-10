@@ -144,51 +144,65 @@ export class MessageListScrollContainer extends React.Component<
     const { classes } = this.props;
 
     return (
-      //   outerContainer: {
-      //   minHeight: 0,
-      //   flex: 1,
-      //   position: 'relative',
-      // },
-      <div className={classes.outerContainer}>
-        {/* height: '100%',
-    overflowY: 'auto',
-    padding: '0 1.2em 0', */}
-        {/* <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll> */}
-        {/* overflowY: 'auto',
-    flex: '1',
-    paddingBottom: '1em', */}
-        <Box
-          height="100%"
-          overflowY="auto"
-          marginBottom="space50"
-          marginX="space60"
-          data-cy-message-list-inner-scroll
-          ref={this.chatThreadRef}
-        >
-          {/* <div className={classes.messageListContainer}> */}
-          {this.props.children}
+      <Box
+        position="relative"
+        height="100%"
+        overflowY="auto"
+        paddingBottom="space50"
+        paddingX="space60"
+        data-cy-message-list-inner-scroll
+        ref={this.chatThreadRef}
+      >
+        {this.props.children}
 
-          <Box
-            visibility={this.state.showButton ? 'visible' : 'hidden'}
-            opacity={this.state.showButton ? 1 : 0}
-            transition="all 0.5s ease"
-            position="absolute"
-            boxShadow="shadow"
-            bottom="space50"
-            right="space90"
-          >
-            <Button onClick={this.handleClick} variant="primary" data-cy-new-message-button>
-              <ArrowDownIcon decorative />
-              {this.state.messageNotificationCount} new message
-              {this.state.messageNotificationCount > 1 && 's'}
-            </Button>
-          </Box>
-          {/* </div> */}
+        <Box
+          visibility={this.state.showButton ? 'visible' : 'hidden'}
+          opacity={this.state.showButton ? 1 : 0}
+          transition="all 0.5s ease"
+          position="absolute"
+          boxShadow="shadow"
+          bottom="space50"
+          right="space90"
+        >
+          <Button onClick={this.handleClick} variant="primary" data-cy-new-message-button>
+            <ArrowDownIcon decorative />
+            {this.state.messageNotificationCount} new message
+            {this.state.messageNotificationCount > 1 && 's'}
+          </Button>
         </Box>
-        {/* </div> */}
-      </div>
+      </Box>
     );
   }
 }
 
 export default withStyles(styles)(MessageListScrollContainer);
+
+//   outerContainer: {
+//   minHeight: 0,
+//   flex: 1,
+//   position: 'relative',
+// },
+// <Box position="relative">
+{
+  /* <div className={classes.outerContainer}> */
+}
+{
+  /* height: '100%',
+    overflowY: 'auto',
+    padding: '0 1.2em 0', */
+}
+{
+  /* <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll> */
+}
+{
+  /* overflowY: 'auto',
+    flex: '1',
+    paddingBottom: '1em', */
+}
+{
+  /* </div> */
+}
+{
+  /* </div> */
+}
+// </Box>
