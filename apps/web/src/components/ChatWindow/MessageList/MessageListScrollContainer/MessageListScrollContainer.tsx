@@ -6,47 +6,10 @@ import { Box } from '@twilio-paste/core/box';
 
 import { ArrowDownIcon } from '@twilio-paste/icons/esm/ArrowDownIcon';
 
-import clsx from 'clsx';
 import { Message } from '@twilio/conversations/lib/message';
 import throttle from 'lodash.throttle';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = createStyles({
-  outerContainer: {
-    minHeight: 0,
-    flex: 1,
-    position: 'relative',
-  },
-  innerScrollContainer: {
-    height: '100%',
-    overflowY: 'auto',
-    padding: '0 1.2em 0',
-  },
-  messageListContainer: {
-    overflowY: 'auto',
-    flex: '1',
-    paddingBottom: '1em',
-    // position: 'relative',
-  },
-  button: {
-    position: 'absolute',
-    bottom: '14px',
-    right: '2em',
-    zIndex: 100,
-    padding: '0.5em 0.9em',
-    visibility: 'hidden',
-    opacity: 0,
-    boxShadow: '0px 4px 16px rgba(18, 28, 45, 0.2)',
-    transition: 'all 0.5s ease',
-  },
-  showButton: {
-    visibility: 'visible',
-    opacity: 1,
-    bottom: '24px',
-  },
-});
-
-interface MessageListScrollContainerProps extends WithStyles<typeof styles> {
+interface MessageListScrollContainerProps {
   messages: Message[];
 }
 
@@ -141,8 +104,6 @@ export class MessageListScrollContainer extends React.Component<
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <Box
         position="relative"
@@ -175,34 +136,4 @@ export class MessageListScrollContainer extends React.Component<
   }
 }
 
-export default withStyles(styles)(MessageListScrollContainer);
-
-//   outerContainer: {
-//   minHeight: 0,
-//   flex: 1,
-//   position: 'relative',
-// },
-// <Box position="relative">
-{
-  /* <div className={classes.outerContainer}> */
-}
-{
-  /* height: '100%',
-    overflowY: 'auto',
-    padding: '0 1.2em 0', */
-}
-{
-  /* <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll> */
-}
-{
-  /* overflowY: 'auto',
-    flex: '1',
-    paddingBottom: '1em', */
-}
-{
-  /* </div> */
-}
-{
-  /* </div> */
-}
-// </Box>
+export default MessageListScrollContainer;
