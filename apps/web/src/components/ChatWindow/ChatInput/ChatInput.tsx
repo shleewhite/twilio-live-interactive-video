@@ -1,64 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+
+import { Box } from '@twilio-paste/core/box';
+import { Button } from '@twilio-paste/core/button';
+import { TextArea } from '@twilio-paste/core/textarea';
+
+import { AttachIcon } from '@twilio-paste/icons/esm/AttachIcon';
+
 import { Conversation } from '@twilio/conversations/lib/conversation';
-import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
 import { isMobile } from '../../../utils';
 import SendMessageIcon from '../../../icons/SendMessageIcon';
 import Snackbar from '../../Snackbar/Snackbar';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-
-const useStyles = makeStyles(theme => ({
-  chatInputContainer: {
-    borderTop: '1px solid #e4e7e9',
-    borderBottom: '1px solid #e4e7e9',
-    padding: '1em 1.2em 1em',
-  },
-  textArea: {
-    width: '100%',
-    border: '0',
-    resize: 'none',
-    fontSize: '14px',
-    fontFamily: 'Inter',
-    outline: 'none',
-  },
-  button: {
-    padding: '0.56em',
-    minWidth: 'auto',
-    '&:disabled': {
-      background: 'none',
-      '& path': {
-        fill: '#d8d8d8',
-      },
-    },
-  },
-  buttonContainer: {
-    margin: '1em 0 0 1em',
-    display: 'flex',
-  },
-  fileButtonContainer: {
-    position: 'relative',
-    marginRight: '1em',
-  },
-  fileButtonLoadingSpinner: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
-  },
-  textAreaContainer: {
-    display: 'flex',
-    marginTop: '0.4em',
-    padding: '0.48em 0.7em',
-    border: '2px solid transparent',
-  },
-  isTextareaFocused: {
-    borderColor: theme.palette.primary.main,
-    borderRadius: '4px',
-  },
-}));
-
 interface ChatInputProps {
   conversation: Conversation;
   isChatWindowOpen: boolean;
@@ -68,14 +19,12 @@ const ALLOWED_FILE_TYPES =
   'audio/*, image/*, text/*, video/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document .xslx, .ppt, .pdf, .key, .svg, .csv';
 
 export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputProps) {
-  const classes = useStyles();
   const [messageBody, setMessageBody] = useState('');
   const [isSendingFile, setIsSendingFile] = useState(false);
   const [fileSendError, setFileSendError] = useState<string | null>(null);
   const isValidMessage = /\S/.test(messageBody);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
   useEffect(() => {
     if (isChatWindowOpen) {
@@ -128,7 +77,16 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
   };
 
   return (
-    <div className={classes.chatInputContainer}>
+    <Box
+      paddingY="space50"
+      paddingX="space60"
+      borderTopStyle="solid"
+      borderTopWidth="borderWidth10"
+      borderTopColor="colorBorderLight"
+      borderBottomStyle="solid"
+      borderBottomWidth="borderWidth10"
+      borderBottomColor="colorBorderLight"
+    >
       <Snackbar
         open={Boolean(fileSendError)}
         headline="Error"
@@ -136,60 +94,49 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         variant="error"
         handleClose={() => setFileSendError(null)}
       />
-      <div className={clsx(classes.textAreaContainer, { [classes.isTextareaFocused]: isTextareaFocused })}>
-        {/* 
-        Here we add the "isTextareaFocused" class when the user is focused on the TextareaAutosize component.
-        This helps to ensure a consistent appearance across all browsers. Adding padding to the TextareaAutosize
-        component does not work well in Firefox. See: https://github.com/twilio/twilio-video-app-react/issues/498
-        */}
-        <TextareaAutosize
-          minRows={1}
-          maxRows={3}
-          className={classes.textArea}
-          aria-label="chat input"
-          placeholder="Write a message..."
-          onKeyPress={handleReturnKeyPress}
-          onChange={handleChange}
-          value={messageBody}
-          data-cy-chat-input
-          ref={textInputRef}
-          onFocus={() => setIsTextareaFocused(true)}
-          onBlur={() => setIsTextareaFocused(false)}
-        />
-      </div>
+      <TextArea
+        aria-label="Message"
+        placeholder="Write a message..."
+        value={messageBody}
+        onKeyPress={handleReturnKeyPress}
+        onChange={handleChange}
+        data-cy-chat-input
+        ref={textInputRef}
+      />
 
-      <Grid container alignItems="flex-end" justifyContent="flex-end" wrap="nowrap">
-        {/* Since the file input element is invisible, we can hardcode an empty string as its value.
+      {/* Since the file input element is invisible, we can hardcode an empty string as its value.
         This allows users to upload the same file multiple times. */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          style={{ display: 'none' }}
-          onChange={handleSendFile}
-          value={''}
-          accept={ALLOWED_FILE_TYPES}
-        />
-        <div className={classes.buttonContainer}>
-          <div className={classes.fileButtonContainer}>
-            <Button className={classes.button} onClick={() => fileInputRef.current?.click()} disabled={isSendingFile}>
-              <FileAttachmentIcon />
-            </Button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        style={{ display: 'none' }}
+        onChange={handleSendFile}
+        value={''}
+        accept={ALLOWED_FILE_TYPES}
+      />
+      <Box display="flex" marginTop="space50" columnGap="space50" justifyContent="flex-end">
+        <Button
+          variant="secondary_icon"
+          size="icon_small"
+          loading={isSendingFile}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <AttachIcon decorative={false} title="Send file" />
+        </Button>
 
-            {isSendingFile && <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />}
-          </div>
-
-          <Button
-            className={classes.button}
-            onClick={() => handleSendMessage(messageBody)}
-            color="primary"
-            variant="contained"
-            disabled={!isValidMessage}
-            data-cy-send-message-button
-          >
+        <Button
+          aria-label="Send chat"
+          variant="primary"
+          size="icon_small"
+          onClick={() => handleSendMessage(messageBody)}
+          disabled={!isValidMessage}
+          data-cy-send-message-button
+        >
+          <Box as="span" width="sizeIcon20" height="sizeIcon20">
             <SendMessageIcon />
-          </Button>
-        </div>
-      </Grid>
-    </div>
+          </Box>
+        </Button>
+      </Box>
+    </Box>
   );
 }

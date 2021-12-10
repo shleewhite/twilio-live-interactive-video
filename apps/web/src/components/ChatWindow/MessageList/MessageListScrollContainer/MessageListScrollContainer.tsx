@@ -1,47 +1,15 @@
 /* istanbul ignore file */
 import React from 'react';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import Button from '@material-ui/core/Button';
-import clsx from 'clsx';
+
+import { Button } from '@twilio-paste/core/button';
+import { Box } from '@twilio-paste/core/box';
+
+import { ArrowDownIcon } from '@twilio-paste/icons/esm/ArrowDownIcon';
+
 import { Message } from '@twilio/conversations/lib/message';
 import throttle from 'lodash.throttle';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
-const styles = createStyles({
-  outerContainer: {
-    minHeight: 0,
-    flex: 1,
-    position: 'relative',
-  },
-  innerScrollContainer: {
-    height: '100%',
-    overflowY: 'auto',
-    padding: '0 1.2em 0',
-  },
-  messageListContainer: {
-    overflowY: 'auto',
-    flex: '1',
-    paddingBottom: '1em',
-  },
-  button: {
-    position: 'absolute',
-    bottom: '14px',
-    right: '2em',
-    zIndex: 100,
-    padding: '0.5em 0.9em',
-    visibility: 'hidden',
-    opacity: 0,
-    boxShadow: '0px 4px 16px rgba(18, 28, 45, 0.2)',
-    transition: 'all 0.5s ease',
-  },
-  showButton: {
-    visibility: 'visible',
-    opacity: 1,
-    bottom: '24px',
-  },
-});
-
-interface MessageListScrollContainerProps extends WithStyles<typeof styles> {
+interface MessageListScrollContainerProps {
   messages: Message[];
 }
 
@@ -136,29 +104,36 @@ export class MessageListScrollContainer extends React.Component<
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
-      <div className={classes.outerContainer}>
-        <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll>
-          <div className={classes.messageListContainer}>
-            {this.props.children}
-            <Button
-              className={clsx(classes.button, { [classes.showButton]: this.state.showButton })}
-              onClick={this.handleClick}
-              startIcon={<ArrowDownwardIcon />}
-              color="primary"
-              variant="contained"
-              data-cy-new-message-button
-            >
-              {this.state.messageNotificationCount} new message
-              {this.state.messageNotificationCount > 1 && 's'}
-            </Button>
-          </div>
-        </div>
-      </div>
+      <Box
+        position="relative"
+        height="100%"
+        overflowY="auto"
+        paddingBottom="space50"
+        paddingX="space60"
+        data-cy-message-list-inner-scroll
+        ref={this.chatThreadRef}
+      >
+        {this.props.children}
+
+        <Box
+          visibility={this.state.showButton ? 'visible' : 'hidden'}
+          opacity={this.state.showButton ? 1 : 0}
+          transition="all 0.5s ease"
+          position="absolute"
+          boxShadow="shadow"
+          bottom="space50"
+          right="space90"
+        >
+          <Button onClick={this.handleClick} variant="primary" data-cy-new-message-button>
+            <ArrowDownIcon decorative />
+            {this.state.messageNotificationCount} new message
+            {this.state.messageNotificationCount > 1 && 's'}
+          </Button>
+        </Box>
+      </Box>
     );
   }
 }
 
-export default withStyles(styles)(MessageListScrollContainer);
+export default MessageListScrollContainer;
