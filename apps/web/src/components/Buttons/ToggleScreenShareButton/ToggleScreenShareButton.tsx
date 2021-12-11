@@ -1,9 +1,8 @@
-import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-
-import Button from '@material-ui/core/Button';
-import ScreenShareIcon from '../../../icons/ScreenShareIcon';
-import Tooltip from '@material-ui/core/Tooltip';
+import React, { FC } from 'react';
+import { ScreenShareIcon } from '@twilio-paste/icons/esm/ScreenShareIcon';
+import { Box } from '@twilio-paste/core/box';
+import { Button, ButtonProps } from '@twilio-paste/core/button';
+import { Tooltip } from '@twilio-paste/core/tooltip';
 
 import useScreenShareParticipant from '../../../hooks/useScreenShareParticipant/useScreenShareParticipant';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
@@ -13,21 +12,15 @@ export const STOP_SCREEN_SHARE_TEXT = 'Stop Sharing Screen';
 export const SHARE_IN_PROGRESS_TEXT = 'Cannot share screen when another user is sharing';
 export const SHARE_NOT_SUPPORTED_TEXT = 'Screen sharing is not supported with this browser';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    button: {
-      '&[disabled]': {
-        color: '#bbb',
-        '& svg *': {
-          fill: '#bbb',
-        },
-      },
-    },
-  })
-);
+const ShareScreenButton: FC<Omit<ButtonProps, 'variant'>> = ({ children, ...props }) => {
+  return (
+    <Button {...props} variant="reset">
+      <ScreenShareIcon decorative /> {children}
+    </Button>
+  );
+};
 
 export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
-  const classes = useStyles();
   const screenShareParticipant = useScreenShareParticipant();
   const { toggleScreenShare } = useVideoContext();
   const disableScreenShareButton = Boolean(screenShareParticipant);
@@ -44,26 +37,23 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
     tooltipMessage = SHARE_NOT_SUPPORTED_TEXT;
   }
 
+  if (tooltipMessage !== '') {
+    return (
+      <Tooltip text={tooltipMessage} placement="top">
+        <Box as="div" display="flex">
+          {/* The span element is needed because a disabled button will not emit hover events and we want to display
+        a tooltip when screen sharing is disabled */}
+          <ShareScreenButton onClick={toggleScreenShare} disabled={isDisabled} data-cy-share-screen>
+            {SCREEN_SHARE_TEXT}
+          </ShareScreenButton>
+        </Box>
+      </Tooltip>
+    );
+  }
+
   return (
-    <Tooltip
-      title={tooltipMessage}
-      placement="top"
-      PopperProps={{ disablePortal: true }}
-      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
-    >
-      <span>
-        {/* The span element is needed because a disabled button will not emit hover events and we want to display
-          a tooltip when screen sharing is disabled */}
-        <Button
-          className={classes.button}
-          onClick={toggleScreenShare}
-          disabled={isDisabled}
-          startIcon={<ScreenShareIcon />}
-          data-cy-share-screen
-        >
-          {SCREEN_SHARE_TEXT}
-        </Button>
-      </span>
-    </Tooltip>
+    <ShareScreenButton onClick={toggleScreenShare} disabled={isDisabled} data-cy-share-screen>
+      {SCREEN_SHARE_TEXT}
+    </ShareScreenButton>
   );
 }

@@ -22,7 +22,6 @@ export default function ToggleAudioButton({
     <Button
       variant={variant}
       element="TOGGLE_AUDIO_BUTTON"
-      fullWidth
       onClick={toggleAudioEnabled}
       disabled={!hasAudioTrack || disabled}
       data-cy-audio-toggle
