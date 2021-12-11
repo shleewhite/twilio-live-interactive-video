@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { CustomizationProvider } from '@twilio-paste/core/customization';
 
 import App from './App';
 import AppStateProvider, { useAppState } from './state';
@@ -49,26 +50,28 @@ const VideoApp = () => {
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
-    <UnsupportedBrowserWarning>
-      <Router basename="/">
-        <AppStateProvider>
-          <Switch>
-            <PrivateRoute exact path="/">
-              <VideoApp />
-            </PrivateRoute>
-            <PrivateRoute path="/:ViewerType/:EventName">
-              <VideoApp />
-            </PrivateRoute>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route>
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-        </AppStateProvider>
-      </Router>
-    </UnsupportedBrowserWarning>
+    <CustomizationProvider baseTheme="default" customBreakpoints={['600px', '960px', '1280px', '1920px']}>
+      <UnsupportedBrowserWarning>
+        <Router basename="/">
+          <AppStateProvider>
+            <Switch>
+              <PrivateRoute exact path="/">
+                <VideoApp />
+              </PrivateRoute>
+              <PrivateRoute path="/:ViewerType/:EventName">
+                <VideoApp />
+              </PrivateRoute>
+              <Route path="/login">
+                <LoginPage />
+              </Route>
+              <Route>
+                <Redirect to="/" />
+              </Route>
+            </Switch>
+          </AppStateProvider>
+        </Router>
+      </UnsupportedBrowserWarning>
+    </CustomizationProvider>
   </MuiThemeProvider>,
   document.getElementById('root')
 );

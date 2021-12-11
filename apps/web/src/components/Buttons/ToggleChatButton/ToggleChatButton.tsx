@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import ChatIcon from '../../../icons/ChatIcon';
+import { ChatIcon } from '@twilio-paste/icons/esm/ChatIcon';
+import { Button } from '@twilio-paste/core/button';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
@@ -90,18 +90,12 @@ export default function ToggleChatButton() {
   }, [conversation, isChatWindowOpen]);
 
   return (
-    <Button
-      data-cy-chat-button
-      onClick={toggleChatWindow}
-      disabled={!conversation}
-      startIcon={
-        <div className={classes.iconContainer}>
-          <ChatIcon />
-          <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
-          <div className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })} />
-        </div>
-      }
-    >
+    <Button variant="reset" data-cy-chat-button onClick={toggleChatWindow} disabled={!conversation}>
+      <div className={classes.iconContainer}>
+        <ChatIcon decorative />
+        <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
+        <div className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })} />
+      </div>
       Chat
     </Button>
   );

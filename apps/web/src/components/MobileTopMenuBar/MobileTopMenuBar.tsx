@@ -1,39 +1,27 @@
-import { Grid, makeStyles, Theme, Typography } from '@material-ui/core';
 import React from 'react';
+import { Box } from '@twilio-paste/core/box';
+import { Text } from '@twilio-paste/core/text';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import Menu from '../MenuBar/Menu/Menu';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    background: 'white',
-    paddingLeft: '1em',
-    display: 'none',
-    height: `${theme.mobileTopBarHeight}px`,
-    [theme.breakpoints.down('sm')]: {
-      display: 'flex',
-    },
-  },
-  settingsButton: {
-    [theme.breakpoints.down('sm')]: {
-      height: '28px',
-      minWidth: '28px',
-      border: '1px solid rgb(136, 140, 142)',
-      padding: 0,
-      margin: '0 1em',
-    },
-  },
-}));
+import { layoutDimensions } from '../../constants';
 
 export default function MobileTopMenuBar() {
-  const classes = useStyles();
   const { room } = useVideoContext();
 
   return (
-    <Grid container alignItems="center" justifyContent="space-between" className={classes.container}>
-      <Typography variant="subtitle1">{room!.name}</Typography>
-      <div>
-        <Menu buttonClassName={classes.settingsButton} />
-      </div>
-    </Grid>
+    <Box
+      element="MOBILE_TOP_BAR"
+      backgroundColor="colorBackgroundBody"
+      display={['flex', 'flex', 'none']}
+      alignItems="center"
+      justifyContent="space-between"
+      height={layoutDimensions.MOBILE_TOP_BAR_HEIGHT}
+      paddingX="space40"
+    >
+      <Text as="span" fontSize="fontSize40">
+        {room!.name}
+      </Text>
+      <Menu buttonVariant="secondary" />
+    </Box>
   );
 }

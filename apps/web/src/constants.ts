@@ -11,3 +11,10 @@ export const SELECTED_VIDEO_INPUT_KEY = 'TwilioVideoApp-selectedVideoInput';
 
 // This is used to store the current background settings in localStorage
 export const SELECTED_BACKGROUND_SETTINGS_KEY = 'TwilioVideoApp-selectedBackgroundSettings';
+
+export const layoutDimensions = {
+  FOOTER_HEIGHT: 72,
+  MOBILE_FOOTER_HEIGHT: 56,
+  MOBILE_TOP_BAR_HEIGHT: 52,
+  SIDEBAR_WIDTH: 300,
+};

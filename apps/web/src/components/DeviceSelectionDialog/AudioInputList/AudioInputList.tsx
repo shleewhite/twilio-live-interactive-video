@@ -1,7 +1,12 @@
 import React from 'react';
-import AudioLevelIndicator from '../../AudioLevelIndicator/AudioLevelIndicator';
+import { useUID } from '@twilio-paste/core/uid-library';
+import { Box } from '@twilio-paste/core/box';
+import { Paragraph } from '@twilio-paste/core/paragraph';
+import { Label } from '@twilio-paste/core/label';
+import { Select, Option } from '@twilio-paste/core/select';
 import { LocalAudioTrack } from 'twilio-video';
-import { FormControl, MenuItem, Typography, Select, Grid } from '@material-ui/core';
+
+import AudioLevelIndicator from '../../AudioLevelIndicator/AudioLevelIndicator';
 import { SELECTED_AUDIO_INPUT_KEY } from '../../../constants';
 import useDevices from '../../../hooks/useDevices/useDevices';
 import useMediaStreamTrack from '../../../hooks/useMediaStreamTrack/useMediaStreamTrack';
@@ -10,6 +15,7 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 export default function AudioInputList() {
   const { audioInputDevices } = useDevices();
   const { localTracks } = useVideoContext();
+  const audioInputSelectId = useUID();
 
   const localAudioTrack = localTracks.find(track => track.kind === 'audio') as LocalAudioTrack;
   const mediaStreamTrack = useMediaStreamTrack(localAudioTrack);
@@ -21,32 +27,26 @@ export default function AudioInputList() {
   }
 
   return (
-    <div>
-      <Typography variant="subtitle2" gutterBottom>
-        Audio Input
-      </Typography>
-      <Grid container alignItems="center" justifyContent="space-between">
-        <div className="inputSelect">
-          {audioInputDevices.length > 1 ? (
-            <FormControl fullWidth>
-              <Select
-                onChange={e => replaceTrack(e.target.value as string)}
-                value={localAudioInputDeviceId || ''}
-                variant="outlined"
-              >
-                {audioInputDevices.map(device => (
-                  <MenuItem value={device.deviceId} key={device.deviceId}>
-                    {device.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          ) : (
-            <Typography>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Typography>
-          )}
-        </div>
+    <>
+      <Label htmlFor={audioInputSelectId}>Audio Input</Label>
+      <Box display="flex" alignItems="center" justifyContent="space-between" columnGap="space40">
+        {audioInputDevices.length > 1 ? (
+          <Select
+            id={audioInputSelectId}
+            onChange={e => replaceTrack(e.target.value as string)}
+            value={localAudioInputDeviceId || ''}
+          >
+            {audioInputDevices.map(device => (
+              <Option value={device.deviceId} key={device.deviceId}>
+                {device.label}
+              </Option>
+            ))}
+          </Select>
+        ) : (
+          <Paragraph>{localAudioTrack?.mediaStreamTrack.label || 'No Local Audio'}</Paragraph>
+        )}
         <AudioLevelIndicator audioTrack={localAudioTrack} color="black" />
-      </Grid>
-    </div>
+      </Box>
+    </>
   );
 }

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
+import { useToaster, Toaster } from '@twilio-paste/core/toast';
+
 import { ActiveScreen } from '../../state/appState/appReducer';
 import { createStream, joinStreamAsSpeaker, joinStreamAsViewer } from '../../state/api/api';
 import CreateNewEventScreen from './CreateNewEventScreen/CreateNewEventScreen';
@@ -12,7 +15,6 @@ import ParticipantNameScreen from './ParticipantNameScreen/ParticipantNameScreen
 import SpeakerOrViewerScreen from './SpeakerOrViewerScreen/SpeakerOrViewerScreen';
 import { useAppState } from '../../state';
 import useChatContext from '../../hooks/useChatContext/useChatContext';
-import { useEnqueueSnackbar } from '../../hooks/useSnackbar/useSnackbar';
 import usePlayerContext from '../../hooks/usePlayerContext/usePlayerContext';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 import useSyncContext from '../../hooks/useSyncContext/useSyncContext';
@@ -25,7 +27,7 @@ export default function PreJoinScreens() {
   const { connect: syncConnect, registerUserDocument, registerRaisedHandsMap } = useSyncContext();
   const [mediaError, setMediaError] = useState<Error>();
   const { appState, appDispatch } = useAppState();
-  const enqueueSnackbar = useEnqueueSnackbar();
+  const toaster = useToaster();
 
   async function connect() {
     appDispatch({ type: 'set-is-loading', isLoading: true });
@@ -76,22 +78,19 @@ export default function PreJoinScreens() {
       appDispatch({ type: 'set-is-loading', isLoading: false });
 
       if (e.response?.data?.error?.explanation === 'Room exists') {
-        enqueueSnackbar({
-          headline: 'Error',
-          message: 'An event already exists with that name. Try creating an event with a different name.',
+        toaster.push({
           variant: 'error',
+          message: 'An event already exists with that name. Try creating an event with a different name.',
         });
       } else if (e.response?.data?.error?.message === 'error finding room') {
-        enqueueSnackbar({
-          headline: 'Error',
-          message: 'Event cannot be found. Please check the event name and try again.',
+        toaster.push({
           variant: 'error',
+          message: 'Event cannot be found. Please check the event name and try again.',
         });
       } else {
-        enqueueSnackbar({
-          headline: 'Error',
-          message: 'There was an error while connecting to the event.',
+        toaster.push({
           variant: 'error',
+          message: 'There was an error while connecting to the event.',
         });
       }
     }
@@ -109,6 +108,7 @@ export default function PreJoinScreens() {
 
   return (
     <IntroContainer transparentBackground={appState.hasSpeakerInvite}>
+      <Toaster {...toaster} />
       <MediaErrorSnackbar error={mediaError} />
 
       {appState.isLoading ? (

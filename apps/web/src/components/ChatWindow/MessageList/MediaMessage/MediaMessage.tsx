@@ -1,41 +1,10 @@
 import React from 'react';
-import FileDownloadIcon from '../../../../icons/FileDownloadIcon';
-import { makeStyles } from '@material-ui/core/styles';
-import { Media } from '@twilio/conversations/lib/media';
 
-const useStyles = makeStyles({
-  messageContainer: {
-    display: 'flex',
-    padding: '0.9em 1.5em',
-    margin: '0.6em 0',
-    border: '2px solid #e4e7e9',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  iconContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  mediaInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginLeft: '1.5em',
-    minWidth: 0,
-    '& p': {
-      margin: 0,
-      fontSize: '12px',
-    },
-  },
-  filename: {
-    fontWeight: 700,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-  size: {
-    fontWeight: 400,
-  },
-});
+import { Box } from '@twilio-paste/core/box';
+import { Text } from '@twilio-paste/core/text';
+
+import FileDownloadIcon from '../../../../icons/FileDownloadIcon';
+import { Media } from '@twilio/conversations/lib/media';
 
 interface MediaMessageProps {
   media: Media;
@@ -48,8 +17,6 @@ export function formatFileSize(bytes: number, suffixIndex = 0): string {
 }
 
 export default function FileMessage({ media }: MediaMessageProps) {
-  const classes = useStyles();
-
   const handleClick = () => {
     media.getContentTemporaryUrl().then(url => {
       const anchorEl = document.createElement('a');
@@ -66,14 +33,36 @@ export default function FileMessage({ media }: MediaMessageProps) {
   };
 
   return (
-    <div className={classes.messageContainer} onClick={handleClick}>
-      <div className={classes.iconContainer}>
+    <Box
+      element="MEDIA_MESSAGE"
+      as="button"
+      onClick={handleClick}
+      display="flex"
+      borderRadius="borderRadius20"
+      cursor="pointer"
+      paddingX="space70"
+      paddingY="space50"
+      columnGap="space70"
+      marginY="space30"
+      backgroundColor="transparent"
+      borderStyle="solid"
+      borderWidth="borderWidth10"
+      borderColor="colorBorder"
+      _focus={{
+        boxShadow: 'shadowFocus',
+      }}
+    >
+      <Box display="flex" alignItems="center">
         <FileDownloadIcon />
-      </div>
-      <div className={classes.mediaInfo}>
-        <p className={classes.filename}>{media.filename}</p>
-        <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
-      </div>
-    </div>
+      </Box>
+      <Box display="flex" flexDirection="column" justifyContent="center">
+        <Text as="span" textAlign="left" fontSize="fontSize20" lineHeight="lineHeight20" fontWeight="fontWeightBold">
+          {media.filename}
+        </Text>
+        <Text as="span" textAlign="left" fontSize="fontSize20" lineHeight="lineHeight20">
+          {formatFileSize(media.size)} - Click to open
+        </Text>
+      </Box>
+    </Box>
   );
 }

@@ -1,18 +1,20 @@
 import React from 'react';
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+
+import { Box } from '@twilio-paste/core/box';
+import { Heading } from '@twilio-paste/core/heading';
+import { Spinner } from '@twilio-paste/core/spinner';
+
 import { appStateTypes } from '../../../state/appState/appReducer';
 
 export function LoadingScreen({ state }: { state: appStateTypes }) {
+  const statusText = state.participantType === 'host' ? 'Going Live' : 'Joining Live Event';
+
   return (
-    <Grid container justifyContent="center" alignItems="center" direction="column" style={{ height: '100%' }}>
-      <div>
-        <CircularProgress variant="indeterminate" />
-      </div>
-      <div>
-        <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
-          {state.participantType === 'host' ? 'Going Live' : 'Joining Live Event'}
-        </Typography>
-      </div>
-    </Grid>
+    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" rowGap="space50">
+      <Spinner decorative title={statusText} size="sizeIcon80" />
+      <Heading as="h1" variant="heading30" marginBottom="space0">
+        {statusText}
+      </Heading>
+    </Box>
   );
 }
