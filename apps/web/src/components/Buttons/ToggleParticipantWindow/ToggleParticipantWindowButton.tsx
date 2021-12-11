@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from '@twilio-paste/core/button';
+import { UserIcon } from '@twilio-paste/icons/esm/UserIcon';
 
-import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core';
-import ParticipantIcon from '../../../icons/ParticipantIcon';
 import { useAppState } from '../../../state';
 import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
@@ -95,20 +95,16 @@ export default function ToggleParticipantWindowButton() {
   }, [raisedHandsMap, appState.isParticipantWindowOpen]);
 
   return (
-    <Button
-      onClick={toggleParticipantWindow}
-      startIcon={
-        <div className={classes.iconContainer}>
-          <ParticipantIcon />
-          <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
-          <div
-            className={clsx(classes.circle, {
-              [classes.hasRaisedHands]: raisedHands.length > 0,
-            })}
-          />
-        </div>
-      }
-    >
+    <Button onClick={toggleParticipantWindow} variant="reset">
+      <div className={classes.iconContainer}>
+        <UserIcon decorative />
+        <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
+        <div
+          className={clsx(classes.circle, {
+            [classes.hasRaisedHands]: raisedHands.length > 0,
+          })}
+        />
+      </div>
       Participants
     </Button>
   );

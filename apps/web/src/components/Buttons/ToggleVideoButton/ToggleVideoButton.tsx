@@ -29,7 +29,6 @@ export default function ToggleVideoButton({
     <Button
       element="TOGGLE_VIDEO_BUTTON"
       variant={variant}
-      fullWidth
       onClick={toggleVideo}
       disabled={!hasVideoInputDevices || disabled}
     >

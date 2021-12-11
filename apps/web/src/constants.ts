@@ -14,5 +14,7 @@ export const SELECTED_BACKGROUND_SETTINGS_KEY = 'TwilioVideoApp-selectedBackgrou
 
 export const layoutDimensions = {
   FOOTER_HEIGHT: 72,
+  MOBILE_FOOTER_HEIGHT: 56,
+  MOBILE_TOP_BAR_HEIGHT: 52,
   SIDEBAR_WIDTH: 300,
 };

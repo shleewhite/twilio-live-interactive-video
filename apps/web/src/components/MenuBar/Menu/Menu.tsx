@@ -1,15 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { FC, useState } from 'react';
+import { Box } from '@twilio-paste/core/box';
+import { ChevronDownIcon } from '@twilio-paste/icons/esm/ChevronDownIcon';
+import { MoreIcon } from '@twilio-paste/icons/esm/MoreIcon';
+import { ProductSettingsIcon } from '@twilio-paste/icons/esm/ProductSettingsIcon';
+import { InformationIcon } from '@twilio-paste/icons/esm/InformationIcon';
+import { Menu as MenuContainer, MenuButton, MenuButtonProps, MenuItem, useMenuState } from '@twilio-paste/core/menu';
+import { isSupported } from '@twilio/video-processors';
+
 import AboutDialog from '../../AboutDialog/AboutDialog';
 import BackgroundIcon from '../../../icons/BackgroundIcon';
 import DeviceSelectionDialog from '../../DeviceSelectionDialog/DeviceSelectionDialog';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIconOutlined from '../../../icons/InfoIconOutlined';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import StartRecordingIcon from '../../../icons/StartRecordingIcon';
 import StopRecordingIcon from '../../../icons/StopRecordingIcon';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import { Button, styled, Theme, useMediaQuery, Menu as MenuContainer, MenuItem, Typography } from '@material-ui/core';
-import { isSupported } from '@twilio/video-processors';
 
 import { useAppState } from '../../../state';
 import useChatContext from '../../../hooks/useChatContext/useChatContext';
@@ -18,18 +20,18 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
 import FlipCameraIcon from '../../../icons/FlipCameraIcon';
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle';
 
-export const IconContainer = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-  width: '1.5em',
-  marginRight: '0.3em',
-});
+const MenuItemContainer: FC = ({ children }) => {
+  return (
+    <Box as="div" display="flex" alignItems="center" flexDirection="row" columnGap="space40">
+      {children}
+    </Box>
+  );
+};
 
-export default function Menu(props: { buttonClassName?: string }) {
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+export default function Menu({ buttonVariant = 'reset' }: { buttonVariant?: MenuButtonProps['variant'] }) {
+  const menuState = useMenuState({ placement: 'top-end' });
 
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { isFetching, updateRecordingRules, roomType, appDispatch } = useAppState();
@@ -37,44 +39,27 @@ export default function Menu(props: { buttonClassName?: string }) {
   const isRecording = useIsRecording();
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
-  const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } = useFlipCameraToggle();
 
   return (
     <>
-      <Button
-        onClick={() => setMenuOpen(isOpen => !isOpen)}
-        ref={anchorRef}
-        className={props.buttonClassName}
+      <MenuButton
+        {...menuState}
+        variant={buttonVariant}
+        size={buttonVariant === 'reset' ? 'reset' : 'icon_small'}
         data-cy-more-button
       >
-        {isMobile ? (
-          <MoreIcon />
-        ) : (
-          <>
-            More
-            <ExpandMoreIcon />
-          </>
-        )}
-      </Button>
-      <MenuContainer
-        open={menuOpen}
-        onClose={() => setMenuOpen(isOpen => !isOpen)}
-        anchorEl={anchorRef.current}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: isMobile ? -55 : 'bottom',
-          horizontal: 'center',
-        }}
-      >
+        <MoreIcon display={['block', 'block', 'none']} decorative={false} title="more options" />
+        <Box display={['none', 'none', 'flex']} columnGap="space20">
+          More <ChevronDownIcon decorative />
+        </Box>
+      </MenuButton>
+      <MenuContainer {...menuState} aria-label="More options">
         {roomType !== 'peer-to-peer' && roomType !== 'go' && (
           <MenuItem
+            {...menuState}
             disabled={isFetching}
             onClick={() => {
-              setMenuOpen(false);
               if (isRecording) {
                 updateRecordingRules(room!.sid, [{ type: 'exclude', all: true }]);
               } else {
@@ -83,28 +68,31 @@ export default function Menu(props: { buttonClassName?: string }) {
             }}
             data-cy-recording-button
           >
-            <IconContainer>{isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}</IconContainer>
-            <Typography variant="body1">{isRecording ? 'Stop' : 'Start'} Recording</Typography>
+            <MenuItemContainer>
+              {isRecording ? <StopRecordingIcon /> : <StartRecordingIcon />}
+              {isRecording ? 'Stop' : 'Start'} Recording
+            </MenuItemContainer>
           </MenuItem>
         )}
         {flipCameraSupported && (
-          <MenuItem disabled={flipCameraDisabled} onClick={toggleFacingMode}>
-            <IconContainer>
+          <MenuItem {...menuState} disabled={flipCameraDisabled} onClick={toggleFacingMode}>
+            <MenuItemContainer>
               <FlipCameraIcon />
-            </IconContainer>
-            <Typography variant="body1">Flip Camera</Typography>
+              Flip Camera
+            </MenuItemContainer>
           </MenuItem>
         )}
 
-        <MenuItem onClick={() => setSettingsOpen(true)}>
-          <IconContainer>
-            <SettingsIcon />
-          </IconContainer>
-          <Typography variant="body1">Audio and Video Settings</Typography>
+        <MenuItem {...menuState} onClick={() => setSettingsOpen(true)}>
+          <MenuItemContainer>
+            <ProductSettingsIcon decorative />
+            Audio and Video Settings
+          </MenuItemContainer>
         </MenuItem>
 
         {isSupported && (
           <MenuItem
+            {...menuState}
             onClick={() => {
               setIsBackgroundSelectionOpen(true);
               setIsChatWindowOpen(false);
@@ -112,35 +100,33 @@ export default function Menu(props: { buttonClassName?: string }) {
                 type: 'set-is-participant-window-open',
                 isParticipantWindowOpen: false,
               });
-              setMenuOpen(false);
             }}
           >
-            <IconContainer>
+            <MenuItemContainer>
               <BackgroundIcon />
-            </IconContainer>
-            <Typography variant="body1">Backgrounds</Typography>
+              Backgrounds
+            </MenuItemContainer>
           </MenuItem>
         )}
 
-        <MenuItem onClick={() => setAboutOpen(true)}>
-          <IconContainer>
-            <InfoIconOutlined />
-          </IconContainer>
-          <Typography variant="body1">About</Typography>
+        <MenuItem {...menuState} onClick={() => setAboutOpen(true)}>
+          <MenuItemContainer>
+            <InformationIcon decorative />
+            About
+          </MenuItemContainer>
         </MenuItem>
       </MenuContainer>
+
       <AboutDialog
         open={aboutOpen}
         onClose={() => {
           setAboutOpen(false);
-          setMenuOpen(false);
         }}
       />
       <DeviceSelectionDialog
         open={settingsOpen}
         onClose={() => {
           setSettingsOpen(false);
-          setMenuOpen(false);
         }}
       />
     </>
